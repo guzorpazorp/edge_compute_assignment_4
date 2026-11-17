@@ -1,4 +1,4 @@
-# Edge KD + NAS (Assignment 4: Edge Computing & Intelligent Systems)
+# edge_compute_assignment_4: Edge KD + NAS (Assignment 4: Edge Computing & Intelligent Systems)
 
 - **Q1:** a knowledge-distillation framework that distils a ResNet-50 teacher into MobileNetV2,
   SqueezeNet and EfficientNet-Lite0 students on CIFAR-100, then exports them to ONNX.
