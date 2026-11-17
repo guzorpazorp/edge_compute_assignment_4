@@ -1,7 +1,7 @@
 """Central path resolution.
 
 Every script reads/writes through these paths so that the same code runs locally,
-on the GTX 1060 machine and on Colab (where CKPT_DIR / RESULTS_DIR point to Google Drive).
+on the GTX 1060 machine and on Colab (where CKPT_DIR / RESULTS_DIR point to /content/out).
 
 Checkpoint convention:  CKPT_DIR/<run_name>/last.pt  (full state, for resuming)
                         CKPT_DIR/<run_name>/best.pt  (weights + metadata, used downstream)

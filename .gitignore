@@ -7,3 +7,6 @@ __pycache__/
 
 # full training state (only weights-only best.pt checkpoints are committed)
 checkpoints/**/last.pt
+
+# Colab transfer bundles
+*.tar.gz

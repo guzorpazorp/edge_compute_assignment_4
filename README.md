@@ -50,16 +50,25 @@ python scripts/download_data.py --dataset cifar100 cifar10     # ~350 MB, via Hu
 | 7 | Inference (torch / ONNX Runtime) | `python scripts/infer.py ...` | laptop CPU | seconds |
 | 8 | Benchmark → `results/benchmark.csv` | `python scripts/benchmark.py` | laptop CPU | ~15–30 min |
 
-Every training script resumes automatically from `CKPT_DIR/<run>/last.pt`. To continue after a
-Colab disconnect, re-run the same cell.
+Every training script resumes automatically from `CKPT_DIR/<run>/last.pt` as long as that file
+still exists (on the GTX 1060 machine and locally, but not after a Colab runtime reset).
 
-### Steps 1–3 on Colab
-1. Open the notebook in Colab and set the runtime to **T4 GPU**.
-2. Run all cells. The notebook mounts Drive, clones this repo, installs the dependencies and
-   downloads CIFAR-100. Checkpoints and logs go to `MyDrive/edge-kd-nas/{checkpoints,results}`.
-3. Run `colab_teacher.ipynb` before `colab_students.ipynb`; KD needs the teacher's checkpoint.
-4. Afterwards, copy `MyDrive/edge-kd-nas/checkpoints/*/best.pt` into `checkpoints/` and
-   `results/logs/` into `results/logs/` in this repo.
+### Steps 1–3 on Colab (manual upload/download, no Google Drive)
+1. Make the dataset archive locally, once:
+   `tar -czf cifar100.tar.gz -C data cifar-100-python` (~160 MB).
+2. Open `notebooks/colab_teacher.ipynb` in Colab and set the runtime to **T4 GPU**.
+3. Drag `cifar100.tar.gz` into the Colab **Files** pane. If it's missing, the notebook opens a
+   file picker.
+4. Run all cells. The notebook clones the repo, extracts the dataset and trains. Outputs go to
+   `/content/out`, which mirrors the repo layout. When training finishes it downloads
+   `teacher_outputs.tar.gz`.
+5. Open `colab_students.ipynb` and upload `cifar100.tar.gz` and `teacher_outputs.tar.gz`. It
+   downloads `baseline_outputs.tar.gz` after the baselines and `kd_outputs.tar.gz` after KD.
+6. Extract each bundle into this repo: `tar -xzf <bundle>.tar.gz -C .` (this fills
+   `checkpoints/<run>/best.pt` and `results/logs/<run>.csv`).
+
+Colab storage is wiped when the runtime disconnects, so keep the tab active and download each
+bundle as soon as its stage ends.
 
 ### Steps 4–5 on the GTX 1060 machine
 ```bash
