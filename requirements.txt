@@ -1,0 +1,14 @@
+# PyTorch: Colab already ships a CUDA build; locally/1060 install from https://pytorch.org
+torch>=2.4
+torchvision>=0.19
+optuna>=4.0
+onnx>=1.16
+onnxruntime>=1.18
+onnxscript>=0.1
+numpy
+pandas
+pyyaml
+psutil
+pillow
+tqdm
+pyarrow

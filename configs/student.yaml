@@ -1,0 +1,21 @@
+# Q1 students: shared by baseline (--mode baseline) and distillation (--mode kd) runs
+dataset: cifar100
+students: [mbv2, squeezenet, efflite0]
+epochs: 60
+batch_size: 128
+lr: 0.05
+weight_decay: 5.0e-4
+warmup_epochs: 1
+amp: true
+num_workers: 2
+seed: 0
+limit_batches: null
+
+kd:
+  teacher_run: teacher_resnet50
+  temperature: 4.0        # softmax temperature T
+  alpha: 0.9              # weight of the soft-target term (1 - alpha on hard labels)
+  beta: 5.0               # weight of the feature-distillation (FitNets) term, normalised to [0, 4]
+  use_soft: true          # soft-target KD from teacher predictions
+  use_hard: true          # hard-label cross-entropy
+  use_feat: true          # intermediate-feature distillation (teacher layer3 <- student 8x8 stage)

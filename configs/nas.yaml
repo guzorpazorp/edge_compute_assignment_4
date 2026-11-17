@@ -1,0 +1,50 @@
+# Q2: hardware-aware NAS on CIFAR-10 (Optuna TPE). Runs on the GTX 1060 machine.
+study_name: cifar10_hw_nas
+seed: 0
+n_trials: 40
+n_startup_trials: 8       # random trials before TPE kicks in (also median-pruner warm-up)
+val_size: 5000            # held-out from the 50k training set
+proxy_train_size: 20000   # images used for proxy training of each candidate
+limit_batches: null
+
+# hardware measurement (CPU, batch size 1)
+latency_threads: 1
+latency_runs: 30
+
+# deployment constraints: candidates violating any of these are rejected before training
+constraints:
+  max_latency_ms: 3.0       # batch-1, 1 thread
+  max_size_mb: 1.0         # fp32 state_dict
+  max_peak_mem_mb: 12.0     # activations + weights during one inference
+
+space:
+  resolution: [24, 32, 40]
+  n_stages: [2, 4]                  # inclusive range; stage strides are [1, 2, 2, 2]
+  blocks_per_stage: [1, 3]          # inclusive range
+  stem_channels: [16, 24, 32]
+  channels:                         # choices per stage index
+    - [16, 24, 32]
+    - [32, 48, 64]
+    - [64, 96, 128]
+    - [128, 160, 256]
+  kernels: [3, 5, 7]
+  block_types: [conv, dwsep]        # standard conv vs depthwise separable
+  activations: [relu, relu6, hswish, silu]
+  head_channels: [0, 256, 512]
+
+proxy_train:
+  epochs: 4
+  batch_size: 256
+  lr: 0.1
+  weight_decay: 5.0e-4
+  warmup_epochs: 0
+  amp: false              # GTX 1060 (Pascal) has very low fp16 throughput -> keep fp32
+
+retrain:                  # best architecture trained from scratch on all 50k images
+  epochs: 60
+  batch_size: 128
+  lr: 0.1
+  weight_decay: 5.0e-4
+  warmup_epochs: 1
+  amp: false
+  limit_batches: null

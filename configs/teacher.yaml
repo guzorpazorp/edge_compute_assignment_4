@@ -1,0 +1,14 @@
+# Q1 teacher: ResNet-50 on CIFAR-100, fine-tuned from ImageNet weights (see docs/notes.md)
+dataset: cifar100
+pretrained: true          # false = train from scratch (then use ~200 epochs, lr 0.1)
+epochs: 30
+batch_size: 128
+lr: 0.05                  # head (fc) learning rate
+backbone_lr_mult: 0.2     # pretrained layers use lr * 0.2
+weight_decay: 5.0e-4
+warmup_epochs: 1
+amp: true                 # mixed precision (Colab T4)
+num_workers: 2
+seed: 0
+save_half: true           # fp16 best.pt (~48 MB) to stay under GitHub's 100 MB file limit
+limit_batches: null       # smoke tests: --set limit_batches=2 epochs=1

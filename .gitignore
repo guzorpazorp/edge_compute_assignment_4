@@ -1,0 +1,9 @@
+# data + environments
+data/
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# full training state (only weights-only best.pt checkpoints are committed)
+checkpoints/**/last.pt
