@@ -42,8 +42,8 @@ python scripts/download_data.py --dataset cifar100 cifar10     # ~350 MB, via Hu
 | # | Step | Command | Machine | Time |
 |---|---|---|---|---|
 | 1 | Teacher ResNet-50 | `notebooks/colab_teacher.ipynb` → `scripts/train_teacher.py` | Colab T4 | ~45–60 min |
-| 2 | Student baselines (no KD) | `notebooks/colab_students.ipynb` → `train_student.py --mode baseline` | Colab T4 | ~1–1.5 h |
-| 3 | Distilled students | `notebooks/colab_students.ipynb` → `train_student.py --mode kd` | Colab T4 | ~1.5–2 h |
+| 2 | Student baselines (no KD) | `notebooks/colab_students.ipynb` → `train_student.py --mode baseline` | Colab T4 | ~20–30 min (20 epochs) |
+| 3 | Distilled students | `notebooks/colab_students.ipynb` → `train_student.py --mode kd` | Colab T4 | ~30–40 min (20 epochs) |
 | 4 | NAS search | `python scripts/nas_search.py` | GTX 1060 | ~20–30 min |
 | 5 | Retrain best NAS arch from scratch | `python scripts/nas_retrain.py` | GTX 1060 | ~15–25 min |
 | 6 | ONNX export (+ parity check) | `python scripts/export_onnx.py` | laptop CPU | ~1 min |

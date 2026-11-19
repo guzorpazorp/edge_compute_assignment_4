@@ -1,7 +1,7 @@
 # Q1 students: shared by baseline (--mode baseline) and distillation (--mode kd) runs
 dataset: cifar100
 students: [mbv2, squeezenet, efflite0]
-epochs: 60
+epochs: 20                # reduced from 60 to fit the Colab time budget
 batch_size: 128
 lr: 0.05
 weight_decay: 5.0e-4
