@@ -1,0 +1,8 @@
+run,model,mode,params_M,top1,top5,best_epoch,epochs,train_min,delta_vs_baseline
+teacher_resnet50,resnet50,teacher,23.713,86.74,98.15,30,30,34.7,
+baseline_mbv2,mbv2,baseline,2.352,69.22,91.51,20,20,23.7,
+baseline_squeezenet,squeezenet,baseline,0.777,58.75,86.05,19,20,23.7,
+baseline_efflite0,efflite0,baseline,3.499,70.33,91.75,20,20,23.8,
+kd_mbv2,mbv2,kd,2.352,69.62,92.33,19,20,34.2,0.4
+kd_squeezenet,squeezenet,kd,0.777,53.21,82.71,20,20,34.3,-5.54
+kd_efflite0,efflite0,kd,3.499,71.35,92.85,19,20,34.3,1.02

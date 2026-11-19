@@ -51,6 +51,36 @@ stage), so the final feature map is 4×4 instead of 1×1.
   fp16 teacher forward pass. The teacher is the most expensive network, so this saves ~2/3 of
   the teacher compute compared with three separate KD runs.
 
+### Q1 results (students: 20 epochs; teacher: 30 epochs)
+Best test top-1 on CIFAR-100, from `results/q1_summary.md` (regenerate with `scripts/summarize_q1.py`):
+
+| Student | Params | Baseline | KD | Δ |
+|---|---|---|---|---|
+| MobileNetV2 | 2.35 M | 69.22 | 69.62 | +0.40 |
+| SqueezeNet | 0.78 M | 58.75 | 53.21 | −5.54 |
+| EfficientNet-Lite0 | 3.50 M | 70.33 | 71.35 | +1.02 |
+
+Teacher ResNet-50 (23.7 M params): 86.74%.
+
+- **The two larger students gain a little from KD.** Their top-5 improves too: +0.8 for
+  MobileNetV2 and +1.1 for EfficientNet-Lite0. KD students also show a smaller train/test gap
+  (train accuracy about 80–85% vs about 85–90% for the baselines), which fits soft targets acting
+  as a regulariser. Gains are modest because the budget is only 20 epochs. KD typically pays off
+  more over longer schedules.
+- **SqueezeNet gets worse with KD and underfits.** Its final train accuracy is 56% with KD vs
+  65% without, so this is not overfitting. Likely causes:
+  - *Capacity gap.* The student has 30× fewer parameters than the teacher, and the teacher's
+    86.7% distribution is hard to match.
+  - *Competing objectives.* With α = 0.9, only 10% of the loss is the hard-label CE. The feature
+    hint also forces SqueezeNet's 256-channel stage to mimic ResNet's 1024-channel layer3, which
+    takes capacity away from classification.
+  - *Short schedule.* SqueezeNet's KD loss is still falling at epoch 20.
+
+  The standard fixes are a lower α, no feature term, or a teacher assistant. These were not run
+  within the time budget, and the result is reported as is.
+- The kd_mbv2 test accuracy oscillates in epochs 4–8 (22.6 → 42.0 → 27.3). This is most likely noise from
+  BN statistics at the peak learning rate, and training is stable after the LR decays.
+
 ## Q2: Hardware-aware NAS
 
 - **Strategy:** Optuna TPE (Bayesian optimisation). The first `n_startup_trials` are random.

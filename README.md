@@ -23,7 +23,7 @@ scripts/        one entry point per pipeline step (below)
 notebooks/      Colab launchers for the GPU-heavy steps
 checkpoints/    <run>/best.pt   (weights + metadata; last.pt = resume state, not committed)
 onnx/           <run>.onnx + <run>.json (metadata for PyTorch-free inference)
-results/        logs/<run>.csv · nas/{history.csv,history.json,best_arch.json} · benchmark.csv
+results/        logs/<run>.csv · q1_summary.{csv,md} · nas/{history.csv,history.json,best_arch.json} · benchmark.csv
 docs/           notes.md · report/ (PDF) · screenshots/
 ```
 Run names: `teacher_resnet50`, `baseline_{mbv2,squeezenet,efflite0}`, `kd_{mbv2,squeezenet,efflite0}`, `nas_best`.
@@ -65,7 +65,8 @@ still exists (on the GTX 1060 machine and locally, but not after a Colab runtime
 5. Open `colab_students.ipynb` and upload `cifar100.tar.gz` and `teacher_outputs.tar.gz`. It
    downloads `baseline_outputs.tar.gz` after the baselines and `kd_outputs.tar.gz` after KD.
 6. Extract each bundle into this repo: `tar -xzf <bundle>.tar.gz -C .` (this fills
-   `checkpoints/<run>/best.pt` and `results/logs/<run>.csv`).
+   `checkpoints/<run>/best.pt` and `results/logs/<run>.csv`), then run
+   `python scripts/summarize_q1.py` to write `results/q1_summary.{csv,md}`.
 
 Colab storage is wiped when the runtime disconnects, so keep the tab active and download each
 bundle as soon as its stage ends.
