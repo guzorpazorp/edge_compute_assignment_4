@@ -41,7 +41,7 @@ proxy_train:
   amp: false              # GTX 1060 (Pascal) has very low fp16 throughput -> keep fp32
 
 retrain:                  # best architecture trained from scratch on all 50k images
-  epochs: 60
+  epochs: 20
   batch_size: 128
   lr: 0.1
   weight_decay: 5.0e-4
