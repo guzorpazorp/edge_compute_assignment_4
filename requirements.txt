@@ -12,3 +12,4 @@ psutil
 pillow
 tqdm
 pyarrow
+matplotlib   # report figures only (scripts/make_report_assets.py)

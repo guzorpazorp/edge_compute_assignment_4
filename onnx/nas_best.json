@@ -1,0 +1,70 @@
+{
+ "run": "nas_best",
+ "arch": "nas",
+ "arch_config": {
+  "resolution": 40,
+  "stem_channels": 16,
+  "head_channels": 256,
+  "stages": [
+   {
+    "blocks": 2,
+    "channels": 24,
+    "kernel": 3,
+    "block": "conv",
+    "act": "hswish",
+    "stride": 1
+   },
+   {
+    "blocks": 1,
+    "channels": 32,
+    "kernel": 5,
+    "block": "conv",
+    "act": "relu6",
+    "stride": 2
+   },
+   {
+    "blocks": 1,
+    "channels": 128,
+    "kernel": 5,
+    "block": "conv",
+    "act": "relu6",
+    "stride": 2
+   },
+   {
+    "blocks": 3,
+    "channels": 128,
+    "kernel": 7,
+    "block": "dwsep",
+    "act": "silu",
+    "stride": 2
+   }
+  ]
+ },
+ "dataset": "cifar10",
+ "num_classes": 10,
+ "resolution": 40,
+ "mean": [
+  0.4914,
+  0.4822,
+  0.4465
+ ],
+ "std": [
+  0.247,
+  0.2435,
+  0.2616
+ ],
+ "classes": [
+  "airplane",
+  "automobile",
+  "bird",
+  "cat",
+  "deer",
+  "dog",
+  "frog",
+  "horse",
+  "ship",
+  "truck"
+ ],
+ "torch_acc": 88.2,
+ "parity_max_abs_diff": 4.291534423828125e-06
+}

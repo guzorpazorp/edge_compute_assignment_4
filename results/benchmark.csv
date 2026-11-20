@@ -1,0 +1,9 @@
+run,arch,mode,dataset,resolution,train_best_acc,params,mflops,size_mb,peak_mem_mb,torch_latency_ms,onnx_size_mb,ort_latency_ms,test_top1,test_top5,test_n,eval_backend
+teacher_resnet50,resnet50,,cifar100,32,86.74,23712932,2611.76,90.7561,202.192,41.4765,90.3795,33.218,86.73,98.15,10000,onnx
+baseline_mbv2,mbv2,baseline,cifar100,32,69.22,2351972,176.18,9.2006,61.631,7.057,8.9466,2.9753,69.25,91.49,10000,onnx
+baseline_squeezenet,squeezenet,baseline,cifar100,32,58.75,776740,48.5,3.0332,11.263,3.7093,2.9653,0.5587,58.74,86.07,10000,onnx
+baseline_efflite0,efflite0,baseline,cifar100,32,70.33,3499108,231.31,13.6009,66.715,7.6627,13.3053,3.9376,70.32,91.76,10000,onnx
+kd_mbv2,mbv2,kd,cifar100,32,69.62,2351972,176.18,9.2006,61.631,7.8133,8.9466,3.0627,69.61,92.31,10000,onnx
+kd_squeezenet,squeezenet,kd,cifar100,32,53.21,776740,48.5,3.0332,11.263,5.1722,2.9653,1.2376,53.18,82.73,10000,onnx
+kd_efflite0,efflite0,kd,cifar100,32,71.35,3499108,231.31,13.6009,66.715,9.5436,13.3053,4.3166,71.35,92.84,10000,onnx
+nas_best,nas,,cifar10,40,88.2,236474,69.91,0.9345,6.557,1.9463,0.9056,0.8503,88.0,99.58,10000,onnx

@@ -10,3 +10,8 @@ checkpoints/**/last.pt
 
 # Colab transfer bundles
 *.tar.gz
+
+# LaTeX build artefacts
+docs/report/*.aux
+docs/report/*.log
+docs/report/*.out

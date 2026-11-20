@@ -45,7 +45,7 @@ python scripts/download_data.py --dataset cifar100 cifar10     # ~350 MB, via Hu
 | 2 | Student baselines (no KD) | `notebooks/colab_students.ipynb` → `train_student.py --mode baseline` | Colab T4 | ~20–30 min (20 epochs) |
 | 3 | Distilled students | `notebooks/colab_students.ipynb` → `train_student.py --mode kd` | Colab T4 | ~30–40 min (20 epochs) |
 | 4 | NAS search | `python scripts/nas_search.py` | GTX 1060 | ~20–30 min |
-| 5 | Retrain best NAS arch from scratch | `python scripts/nas_retrain.py` | GTX 1060 | ~15–25 min |
+| 5 | Retrain best NAS arch from scratch | `python scripts/nas_retrain.py` | GTX 1060 | ~5 min (20 epochs) |
 | 6 | ONNX export (+ parity check) | `python scripts/export_onnx.py` | laptop CPU | ~1 min |
 | 7 | Inference (torch / ONNX Runtime) | `python scripts/infer.py ...` | laptop CPU | seconds |
 | 8 | Benchmark → `results/benchmark.csv` | `python scripts/benchmark.py` | laptop CPU | ~15–30 min |
@@ -85,6 +85,12 @@ python scripts/export_onnx.py                                   # all students +
 python scripts/infer.py --run kd_mbv2 --backend onnx --image some_image.png
 python scripts/infer.py --run all --backend both --testset      # accuracy, PyTorch vs ONNX Runtime
 python scripts/benchmark.py --threads 1                         # -> results/benchmark.csv
+```
+
+### Report
+```bash
+python scripts/make_report_assets.py      # figures + tables from results/ -> docs/report/{figs,tables}
+cd docs/report && pdflatex report && pdflatex report
 ```
 
 ### Smoke test (any machine, a few minutes on CPU)

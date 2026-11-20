@@ -102,6 +102,33 @@ Teacher ResNet-50 (23.7 M params): 86.74%.
 - **fp32 on the GTX 1060:** Pascal GPUs have very low fp16 throughput, so AMP is disabled for
   the NAS configs.
 
+### Q2 results
+Search: 40 Optuna trials on the GTX 1060 box. Latency was profiled on its CPU, an Intel Xeon
+E3-1220 v3, with 1 thread and batch 1.
+- **15 rejected by the hardware constraints**, before any training was spent on them:
+  - 14 exceeded the 1 MB size limit;
+  - 12 exceeded the 3 ms latency limit;
+  - 3 exceeded the 12 MB peak-memory limit;
+  - many violated several limits at once.
+- **11 median-pruned** during proxy training.
+- **14 completed.** Proxy val accuracy ranged from 44.9% to 67.3%.
+
+Best architecture: trial 3, `res40 stem16 [2xconv3-24-hswish | 1xconv5-32-relu6 | 1xconv5-128-relu6 | 3xdwsep7-128-silu] head256`.
+
+| Params | MFLOPs | Size | Latency (Xeon) | Peak mem | Proxy val acc | Retrained test top-1 |
+|---|---|---|---|---|---|---|
+| 236k | 69.9 | 0.93 MB | 2.44 ms | 6.6 MB | 67.30 | **88.20** |
+
+- The search favoured a high input resolution (40). It uses cheap standard convs early, a wide
+  128-channel stage, and depthwise-separable 7×7 blocks at the lowest resolution, where large
+  kernels are cheap. Size was the binding constraint: the best candidates all sit at 0.93 MB,
+  just under the 1 MB limit.
+- **Retrain:** 20 epochs instead of 60, chosen for time. The run took 4.6 min on the 1060, and
+  test accuracy was still rising slowly at the end (88.17 → 88.20 over the last two epochs).
+- On the deployment laptop (i7-8665U, 1 thread) `scripts/benchmark.py` measures 1.95 ms in PyTorch
+  and 0.85 ms in ONNX Runtime, so the 3 ms budget also holds on the target. Full table:
+  `results/benchmark.csv`.
+
 ## Data
 `scripts/download_data.py` defaults to the Hugging Face parquet mirror
 (`uoft-cs/cifar10`, `uoft-cs/cifar100`) and converts it to the exact on-disk format torchvision
